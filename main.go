@@ -2,32 +2,38 @@ package main
 
 import "fmt"
 
+type person struct {
+	name string
+	age  int
+}
+
+func newPerson(name string) *person {
+
+	p := person{name: name}
+	p.age = 42
+	return &p
+}
+
 func main() {
-	f := "apple"
-	f = "ios"
 
-	var v string
-	v = "wind"
+	fmt.Println(person{"Bob", 20})
 
-	fmt.Println("hello world" + f + v)
+	fmt.Println(person{age: 30, name: "Alice"})
 
-	var a [5]int
-	a[4] = 100
-	fmt.Println("a:", a)
-	fmt.Println("get:", a[4])
+	fmt.Println(person{name: "Fred"})
 
-	s := make([]string, 5)
-	s[0] = "a"
-	s[1] = "b"
-	s[2] = "c"
-	s[3] = "d"
-	s[4] = "e"
-	fmt.Println("emp:", s)
+	fmt.Println(&person{name: "Ann", age: 40})
 
-	l := s[:2]
-	fmt.Println("sl1:", l)
+	fmt.Println(newPerson("Jon"))
 
-	n := map[string]string{"foo": "5", "bar": "5"}
-	fmt.Println("map:", n)
+	s := person{} //intanciar la structura
+	s.name = "Sean"
+	s.age = 50
+	fmt.Println(s.name)
 
+	sp := &s
+	fmt.Println(sp.age)
+
+	sp.age = 51
+	fmt.Println(sp.age)
 }

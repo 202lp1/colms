@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 	var numero int
-	var puntero *int // Puntero a un int
+	var puntero *int // Puntero a un int (en C int *x;)
 
 	numero = 10
 	puntero = &numero
