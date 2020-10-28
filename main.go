@@ -3,20 +3,28 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	http.HandleFunc("/", home)
-	http.HandleFunc("/login", login)
-	//http.HandleFunc("/tabla", tablalist) /{id}
-	http.HandleFunc("/tabla", tablaget)
+	r := mux.NewRouter()
 
-	http.ListenAndServe(":8090", nil)
+	r.HandleFunc("/", home).Methods("GET")
+	r.HandleFunc("/login", login)
+	//http.HandleFunc("/tabla", tablalist) /{id}
+	r.HandleFunc("/tabla/{id}", tablaget)
+
+	http.ListenAndServe(":8090", r)
 }
 func tablaget(w http.ResponseWriter, req *http.Request) {
-	id := req.URL.Query() //req.Param("id")
-	fmt.Println("id=", id)
-	fmt.Fprintf(w, "tablaget page ", id)
+	//params := req.URL.Query() //gin.Param("id") ["param1"]
+	vars := mux.Vars(req)
+
+	//fmt.Println("id=", params.Get("id"))
+	//fmt.Fprintf(w, "tablaget page ", params.Get("id"))
+	fmt.Println("id=", vars["id"])
+	fmt.Fprintf(w, "tablaget page ", vars["id"])
 }
 
 func tablalist(w http.ResponseWriter, req *http.Request) {
