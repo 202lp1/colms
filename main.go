@@ -1,39 +1,32 @@
 package main
 
-import "fmt"
-
-type person struct {
-	name string
-	age  int
-}
-
-func newPerson(name string) *person {
-
-	p := person{name: name}
-	p.age = 42
-	return &p
-}
+import (
+	"fmt"
+	"net/http"
+)
 
 func main() {
+	http.HandleFunc("/", home)
+	http.HandleFunc("/login", login)
+	//http.HandleFunc("/tabla", tablalist) /{id}
+	http.HandleFunc("/tabla", tablaget)
 
-	fmt.Println(person{"Bob", 20})
+	http.ListenAndServe(":8090", nil)
+}
+func tablaget(w http.ResponseWriter, req *http.Request) {
+	id := req.URL.Query() //req.Param("id")
+	fmt.Println("id=", id)
+	fmt.Fprintf(w, "tablaget page ", id)
+}
 
-	fmt.Println(person{age: 30, name: "Alice"})
+func tablalist(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "tablalist page ")
+}
 
-	fmt.Println(person{name: "Fred"})
+func home(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "Home page ")
+}
 
-	fmt.Println(&person{name: "Ann", age: 40})
-
-	fmt.Println(newPerson("Jon"))
-
-	s := person{} //intanciar la structura
-	s.name = "Sean"
-	s.age = 50
-	fmt.Println(s.name)
-
-	sp := &s
-	fmt.Println(sp.age)
-
-	sp.age = 51
-	fmt.Println(sp.age)
+func login(w http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(w, "Login page ")
 }
