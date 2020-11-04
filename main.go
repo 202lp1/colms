@@ -4,27 +4,37 @@ import (
 	"fmt"
 	"net/http"
 
+	"text/template"
+
 	"github.com/gorilla/mux"
 )
+
+var tmpl = template.Must(template.ParseGlob("web/*"))
 
 func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", home).Methods("GET")
 	r.HandleFunc("/login", login)
-	//http.HandleFunc("/tabla", tablalist) /{id}
+	r.HandleFunc("/tabla", tablalist)
 	r.HandleFunc("/tabla/{id}", tablaget)
 
 	http.ListenAndServe(":8090", r)
 }
 func tablaget(w http.ResponseWriter, req *http.Request) {
-	//params := req.URL.Query() //gin.Param("id") ["param1"]
-	vars := mux.Vars(req)
 
-	//fmt.Println("id=", params.Get("id"))
-	//fmt.Fprintf(w, "tablaget page ", params.Get("id"))
-	fmt.Println("id=", vars["id"])
-	fmt.Fprintf(w, "tablaget page ", vars["id"])
+	//t, _ := template.New("foo").Parse(`{{define "T"}}Hello, {{.}}!{{end}}`)
+	//t.ExecuteTemplate(w, "T", "<script>alert('you have been pwned')</script>")
+
+	//vars := mux.Vars(req)
+	//fmt.Println("id=", vars["id"])
+	//fmt.Fprintf(w, "tablaget page ", vars["id"])
+	// you access the cached templates with the defined name, not the filename
+	err := tmpl.ExecuteTemplate(w, "indexPage", nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
 func tablalist(w http.ResponseWriter, req *http.Request) {
