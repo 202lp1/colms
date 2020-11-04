@@ -12,6 +12,7 @@ import (
 )
 
 //var tmpl = template.Must(template.ParseGlob("web/*"))
+//var tmpl = template.Must(template.ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl"))
 
 func main() {
 	r := mux.NewRouter()

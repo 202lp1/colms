@@ -10,7 +10,13 @@ import (
 	//"github.com/gorilla/mux"
 )
 
-var tmpl = template.Must(template.ParseGlob("web/*"))
+//var tmpl = template.Must(template.Must(template.ParseGlob("web/*")).ParseGlob("web/home/*"))
+
+//var tmpl = template.Must(template.ParseGlob("web/*"))
+
+var tmpl = template.Must(template.ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/home/index.html"))
+
+//var tmpl = template.Must(template.Must(template.ParseGlob("web/**/*")).ParseFiles("web/home/index.html"))
 
 func Tablaget(w http.ResponseWriter, req *http.Request) {
 
