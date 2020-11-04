@@ -21,6 +21,8 @@ func main() {
 	r.HandleFunc("/login", login)
 	r.HandleFunc("/tabla", controllers.Tablalist)
 	r.HandleFunc("/tabla/{id}", controllers.Tablaget)
+	r.HandleFunc("/item", controllers.Itemlist)
+	r.HandleFunc("/item/{id}", controllers.Itemget)
 
 	http.ListenAndServe(":8090", r)
 }
