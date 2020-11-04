@@ -6,6 +6,7 @@ import (
 
 	"text/template"
 
+	"github.com/202lp1/colms/models"
 	"github.com/gorilla/mux"
 )
 
@@ -30,7 +31,9 @@ func tablaget(w http.ResponseWriter, req *http.Request) {
 	//fmt.Println("id=", vars["id"])
 	//fmt.Fprintf(w, "tablaget page ", vars["id"])
 	// you access the cached templates with the defined name, not the filename
-	err := tmpl.ExecuteTemplate(w, "indexPage", nil)
+	d := models.Item{Title: "Sean", Notes: "nnn"}
+
+	err := tmpl.ExecuteTemplate(w, "indexPage", d)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
