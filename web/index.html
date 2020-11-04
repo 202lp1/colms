@@ -1,13 +1,11 @@
 {{define "indexPage"}}
-    <html>
-    <body>
-        <h1>Index</h1>
-    </body>
-
+    {{ template "Header" }}
+    {{ template "Menu"  }}
+    
     {{ . }}
     <br>
     Title={{ .Title }}<br>
     Notes={{ .Notes }}
 
-    </html>
+    {{ template "Footer" }}
 {{end}}
