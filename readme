@@ -1,0 +1,32 @@
+PS D:\dockr\lp2\go2> docker inspect -f '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $(docker ps -aq)   
+
+
+
+PS D:\dockr\lp2\go2\src> nodemon --exec go run main.go --signal SIGTERM
+
+[nodemon] 2.0.6
+[nodemon] reading config .\nodemon.json
+[nodemon] to restart at any time, enter `rs`
+[nodemon] or send SIGUSR2 to 384 to restart
+[nodemon] ignoring: .git node_modules/**/node_modules
+[nodemon] watching path(s): apis\**\* ..\..\..\..\**\*
+[nodemon] watching extensions: js,go,html,tmpl
+[nodemon] bind restart -> `osascript -e 'display notification "App restarted due to:
+'$FILENAME'" with title "nodemon"'`
+[nodemon] starting `go run main.go`
+[nodemon] spawning
+[nodemon] child pid: 13552
+
+2020/11/05 10:18:17 D:/dockr/lp2/go2/src/routers/routers.go:40
+[error] failed to initialize database, got error dial tcp: lookup mysql-db: no such host
+panic: failed to connect database: dial tcp: lookup mysql-db: no such host
+
+goroutine 1 [running]:
+github.com/202lp2/go2/routers.connectDB(0x1262ba1, 0x5, 0x1325340)
+        D:/dockr/lp2/go2/src/routers/routers.go:43 +0x15f
+github.com/202lp2/go2/routers.SetupRouter(0xc000058058)
+        D:/dockr/lp2/go2/src/routers/routers.go:12 +0x3b
+main.main()
+        D:/dockr/lp2/go2/src/main.go:9 +0x29
+exit status 2
+[nodemon] app crashed - waiting for file changes before starting...
