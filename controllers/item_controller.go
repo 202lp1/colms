@@ -18,7 +18,7 @@ func Itemget(w http.ResponseWriter, req *http.Request) {
 	//fmt.Println("id=", vars["id"])
 	//fmt.Fprintf(w, "tablaget page ", vars["id"])
 	// you access the cached templates with the defined name, not the filename
-	d := models.Item{Title: "Sean", Notes: "nnn"}
+	d := models.Item{Title: "Sean222", Notes: "nnn"}
 
 	err := tmpli.ExecuteTemplate(w, "item/indexPage", d)
 	if err != nil {
@@ -28,5 +28,5 @@ func Itemget(w http.ResponseWriter, req *http.Request) {
 }
 
 func Itemlist(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "item list page ")
+	fmt.Fprintf(w, "item list page ooooo ")
 }

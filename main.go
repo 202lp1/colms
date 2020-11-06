@@ -28,7 +28,7 @@ func main() {
 }
 
 func home(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Home page ")
+	fmt.Fprintf(w, "Home page x")
 }
 
 func login(w http.ResponseWriter, req *http.Request) {
