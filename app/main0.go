@@ -13,8 +13,8 @@ func dbConn() (db *sql.DB) {
     dbUser := "docker"
     dbPass := "docker"
     dbName := "test_db"
-    //db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp(mysql-db:3306)/"+dbName)
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp(mysql-db:3306)/"+dbName)
+    //db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp(localhost:3306)/"+dbName)
     if err != nil {
         panic(err.Error())
         log.Fatal(err)
@@ -150,7 +150,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/", 301)
 }
 
-func main() {
+func mainx() {
     log.Println("Server started on: http://localhost:8080")
     //http.Handle("/", Index)
     http.HandleFunc("/", Index)

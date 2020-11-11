@@ -1,0 +1,12 @@
+{{define "employee/indexPage"}}
+    {{ template "Header" }}
+    {{ template "Menu"  }}
+    <br>
+    employee <br>
+    {{ . }}
+    <br>
+    Title={{ .Name }}<br>
+    Notes={{ .City }}
+
+    {{ template "Footer" }}
+{{end}}

@@ -14,7 +14,7 @@ import (
 //var tmpl = template.Must(template.ParseGlob("web/*"))
 //var tmpl = template.Must(template.ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl"))
 
-func mainx() {
+func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", home).Methods("GET")
@@ -23,6 +23,9 @@ func mainx() {
 	r.HandleFunc("/tabla/{id}", controllers.Tablaget)
 	r.HandleFunc("/item", controllers.Itemlist)
 	r.HandleFunc("/item/{id}", controllers.Itemget)
+
+	r.HandleFunc("/employee", controllers.EmployeeList)
+	r.HandleFunc("/employee/{id}", controllers.EmployeeGet)
 
 	http.ListenAndServe(":8080", r)
 }
