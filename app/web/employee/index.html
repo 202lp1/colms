@@ -1,12 +1,33 @@
 {{define "employee/indexPage"}}
-    {{ template "Header" }}
-    {{ template "Menu"  }}
-    <br>
-    employee <br>
-    {{ . }}
-    <br>
-    Title={{ .Name }}<br>
-    Notes={{ .City }}
+{{ template "Header" }}
+{{ template "Menu"  }}
 
-    {{ template "Footer" }}
+{{ . }}
+
+<h2> Registered </h2>
+<table border="1">
+  <thead>
+  <tr>
+    <td>ID</td>
+    <td>Name</td>
+    <td>City</td>
+    <td>View</td>
+    <td>Edit</td>
+    <td>Delete</td>
+  </tr>
+   </thead>
+   <tbody>
+{{ range . }}
+  <tr>
+    <td>{{ .ID }}</td>
+    <td> {{ .Name }} </td>
+    <td>{{ .City }} </td> 
+    <td><a href="/show?id={{ .ID }}">View</a></td>
+    <td><a href="employee/{{ .ID }}">Edit</a></td>
+    <td><a href="/delete?id={{ .ID }}">Delete</a><td>
+  </tr>
+{{ end }}
+   </tbody>
+</table>
+{{ template "Footer" }}
 {{end}}
