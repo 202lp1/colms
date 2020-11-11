@@ -42,9 +42,10 @@ func EmployeeList(w http.ResponseWriter, req *http.Request) {
 
 	var lis []models.Empleado
 	db.Find(&lis)
+
 	log.Printf("lis: %v", lis)
 	//for lis {
 
 	//}
-	fmt.Fprintf(w, "employe list page ooooo ")
+	fmt.Fprintf(w, "%+v", lis)
 }
