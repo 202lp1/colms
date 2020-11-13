@@ -1,10 +1,14 @@
 package models
 
 import (
-  "github.com/twinj/uuid" //jwt-best-practices 
-  //"github.com/gofrs/uuid" //offersapp
-  "gorm.io/gorm"
+	"github.com/twinj/uuid"
+	"gorm.io/gorm"
 )
+
+//import (
+//"github.com/twinj/uuid" //jwt-best-practices
+//"gorm.io/gorm"
+//)
 
 //https://gorm.io/docs/conventions.html
 //type Tabler interface {
@@ -13,20 +17,20 @@ import (
 
 // TableName overrides the table name used by Empleado to `employee`
 func (Empleado) TableName() string {
-	return "employee"
+	return "employee2"
 }
 
 // BeforeCreate will set a UUID rather than numeric ID. https://gorm.io/docs/create.html
-func (tab *Empleado) BeforeCreate(*gorm.DB) error {
- uuidx := uuid.NewV4()
- tab.ID = uuidx.String()
-// if err != nil {
- // return err
- //}
- //return db.SetColumn("ID", uuid)
- return nil
-}
 
+func (tab *Empleado) BeforeCreate(*gorm.DB) error {
+	uuidx := uuid.NewV4()
+	tab.ID = uuidx.String()
+	// if err != nil {
+	// return err
+	//}
+	//return db.SetColumn("ID", uuid)
+	return nil
+}
 
 //https://gorm.io/docs/models.html
 type Empleado struct {
@@ -35,14 +39,14 @@ type Empleado struct {
 	//ID uint `gorm:"primaryKey"`
 	//ID     uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
 	//ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
-	ID        string `gorm:"primary_key;column:id"` 
+	ID string `gorm:"primary_key;column:id"` //;default:UUID()
 	//UUID   string `gorm:"primaryKey"`
 	//CreatedAt time.Time
 	//UpdatedAt time.Time
 	//DeletedAt gorm.DeletedAt `gorm:"index"`
 
 	Name string
-	City string
+	City string `gorm:"column:my_ciudad"`
 }
 
 /*
