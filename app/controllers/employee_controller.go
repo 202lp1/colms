@@ -20,10 +20,14 @@ var tmple = template.Must(template.ParseFiles("web/Header.tmpl", "web/Menu.tmpl"
 func EmployeeList(w http.ResponseWriter, req *http.Request) {
 
 	// Create
-	//db.Create(&models.Empleado{Name: "Juan", City: "Juliaca"})
+	//cfig.DB.Create(&models.Empleado{Name: "Juan", City: "Juliaca"})
 
 	lis := []models.Empleado{}
-	cfig.DB.Find(&lis)
+	if err := cfig.DB.Find(&lis).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	log.Printf("lis: %v", lis)
 	//data := ViewData{
 	//	Name:    "John Smith",
@@ -40,16 +44,16 @@ func EmployeeGet(w http.ResponseWriter, req *http.Request) {
 
 	vars := mux.Vars(req)
 	log.Printf("id=: %v", vars["id"])
-
+	//db.First(&product, "code = ?", "D42") // find product with code D42
 	var d models.Empleado
-	cfig.DB.First(&d, vars["id"]) // find product with integer primary key
-
-	//d := models.Empleado{Name: "Angel", City: "Juliaca"}
+	if err := cfig.DB.First(&d, "id = ?", vars["id"]).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	err := tmple.ExecuteTemplate(w, "employee/formPage", d)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 }
