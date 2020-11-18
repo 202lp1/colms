@@ -40,15 +40,28 @@ func EmployeeList(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func EmployeeGet(w http.ResponseWriter, req *http.Request) {
+func EmployeeGet(w http.ResponseWriter, r *http.Request) {
 
-	vars := mux.Vars(req)
-	log.Printf("get id=: %v", vars["id"])
+	id := mux.Vars(r)["id"]
+	log.Printf("get id=: %v", id)
 	//db.First(&product, "code = ?", "D42") // find product with code D42
 	var d models.Empleado
-	if err := cfig.DB.First(&d, "id = ?", vars["id"]).Error; err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	if id != "" {
+		if err := cfig.DB.First(&d, "id = ?", id).Error; err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	if r.Method == "POST" {
+		d.Name = r.FormValue("name")
+		d.City = r.FormValue("city")
+		if id != "" {
+			cfig.DB.Save(&d)
+		} else {
+			cfig.DB.Create(&d)
+		}
+		http.Redirect(w, r, "/employee/index", 301)
 	}
 
 	err := tmple.ExecuteTemplate(w, "employee/formPage", d)
@@ -56,25 +69,4 @@ func EmployeeGet(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-}
-
-func EmployeeUpdate(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
-	log.Printf("post id=: %v", id)
-	//db.First(&product, "code = ?", "D42") // find product with code D42
-	var d models.Empleado
-
-	//db.Model(&product).Updates(Product{Price: 201, Code: "F42"})
-
-	if err := cfig.DB.First(&d, "id = ?", id).Error; err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	d.Name = r.FormValue("name")
-	d.City = r.FormValue("city")
-	cfig.DB.Save(&d)
-
-	http.Redirect(w, r, "/employee", 301)
 }

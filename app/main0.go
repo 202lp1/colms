@@ -14,8 +14,8 @@ func dbConn() (db *sql.DB) {
 	dbUser := "docker"
 	dbPass := "docker"
 	dbName := "test_db"
-	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp(mysql-db:3306)/"+dbName)
-	//db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp(localhost:3306)/"+dbName)
+	//db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp(mysql-db:3306)/"+dbName)
+	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp(localhost:3306)/"+dbName)
 	if err != nil {
 		panic(err.Error())
 		log.Fatal(err)

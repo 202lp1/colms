@@ -35,9 +35,10 @@ func main() {
 	r.HandleFunc("/item", controllers.Itemlist)
 	r.HandleFunc("/item/{id}", controllers.Itemget)
 
-	r.HandleFunc("/employee", controllers.EmployeeList).Methods("GET")
-	r.HandleFunc("/employee/{id}", controllers.EmployeeGet).Methods("GET")
-	r.HandleFunc("/employee/{id}", controllers.EmployeeUpdate).Methods("POST")
+	r.HandleFunc("/employee/index", controllers.EmployeeList).Methods("GET")
+	r.HandleFunc("/employee", controllers.EmployeeGet).Methods("GET", "POST")
+	r.HandleFunc("/employee/{id}", controllers.EmployeeGet).Methods("GET", "POST")
+	//r.HandleFunc("/employee/{id}", controllers.EmployeeUpdate).Methods("POST")
 
 	http.ListenAndServe(":8080", r)
 }
