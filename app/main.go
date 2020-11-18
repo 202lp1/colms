@@ -30,7 +30,7 @@ func main() {
 	r.HandleFunc("/", controllers.Home).Methods("GET")
 
 	r.HandleFunc("/employee/index", controllers.EmployeeList).Methods("GET")
-	r.HandleFunc("/employee/form", controllers.EmployeeGet).Methods("GET", "POST")
+	r.HandleFunc("/employee/form", controllers.EmployeeForm).Methods("GET", "POST")
 	r.HandleFunc("/employee/delete", controllers.EmployeeDel).Methods("GET")
 
 	http.ListenAndServe(":8080", r)

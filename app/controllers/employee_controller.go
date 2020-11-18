@@ -39,7 +39,7 @@ func EmployeeList(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func EmployeeGet(w http.ResponseWriter, r *http.Request) {
+func EmployeeForm(w http.ResponseWriter, r *http.Request) {
 	//log.Printf("r.Method= %v", r.Method)
 	id := r.URL.Query().Get("id") //mux.Vars(r)["id"]
 	log.Printf("get id=: %v", id)
