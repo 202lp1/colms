@@ -19,22 +19,19 @@ type ViewData struct {
 var tmple = template.Must(template.ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/employee/index.html", "web/employee/form.html"))
 
 func EmployeeList(w http.ResponseWriter, req *http.Request) {
-
 	// Create
 	//cfig.DB.Create(&models.Empleado{Name: "Juan", City: "Juliaca"})
-
 	lis := []models.Empleado{}
 	if err := cfig.DB.Find(&lis).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	log.Printf("lis: %v", lis)
-	//data := ViewData{
-	//	Name:    "John Smith",
-	//	Widgets: lis,
-	//}
-	err := tmple.ExecuteTemplate(w, "employee/indexPage", lis)
+	//log.Printf("lis: %v", lis)
+	data := ViewData{
+		Name:    "Empleado",
+		Widgets: lis,
+	}
+	err := tmple.ExecuteTemplate(w, "employee/indexPage", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -42,14 +39,10 @@ func EmployeeList(w http.ResponseWriter, req *http.Request) {
 }
 
 func EmployeeGet(w http.ResponseWriter, r *http.Request) {
-	log.Printf("r.Method= %v", r.Method)
-
+	//log.Printf("r.Method= %v", r.Method)
 	id := r.URL.Query().Get("id") //mux.Vars(r)["id"]
 	log.Printf("get id=: %v", id)
-
-	//db.First(&product, "code = ?", "D42") // find product with code D42
 	var d models.Empleado
-
 	IsEdit := false
 	if id != "" {
 		IsEdit = true
@@ -85,8 +78,7 @@ func EmployeeGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func EmployeeDel(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id") //mux.Vars(r)["id"]
-	//log.Printf("del id=: %v", id)
+	id := r.URL.Query().Get("id") //mux.Vars(r)["id"]//log.Printf("del id=: %v", id)
 	var d models.Empleado
 	if err := cfig.DB.First(&d, "id = ?", id).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

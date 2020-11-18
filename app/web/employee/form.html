@@ -3,9 +3,9 @@
 {{ template "Header" }}
 {{ template "Menu" }} 
 {{ . }}
-<h2>Edit Name and City</h2>  
+<h2> {{if .IsEdit }}Update{{else}}Create{{end}} </h2>  
 
-<form method="POST">
+<form method="POST" action="form">
   <input type="hidden" name="id" value="{{ .Data.ID }}" />
   <label> Name </label><input type="text" name="name" value="{{ .Data.Name }}"  /><br />
   <label> City </label><input type="text" name="city" value="{{ .Data.City }}"  /><br />

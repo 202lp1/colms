@@ -16,14 +16,14 @@
   </tr>
    </thead>
    <tbody>
-{{ range . }}
+{{ range .Widgets }}
   <tr>
     <td>{{ .ID }}</td>
     <td> {{ .Name }} </td>
     <td>{{ .City }} </td> 
     <td><a href="../employee/show?id={{ .ID }}">View</a></td>
     <td><a href="../employee/form?id={{ .ID }}">Edit</a></td>
-    <td><a href="../employee/delete?id={{ .ID }}" onclick="return confirm('Are you sure?');">Delete</a><td>
+    <td><a href="../employee/delete?id={{ .ID }}" onclick="return confirm('Are you sure?');">Delete</a></td>
   </tr>
 {{ end }}
 
