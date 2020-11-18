@@ -43,7 +43,7 @@ func EmployeeList(w http.ResponseWriter, req *http.Request) {
 func EmployeeGet(w http.ResponseWriter, req *http.Request) {
 
 	vars := mux.Vars(req)
-	log.Printf("id=: %v", vars["id"])
+	log.Printf("get id=: %v", vars["id"])
 	//db.First(&product, "code = ?", "D42") // find product with code D42
 	var d models.Empleado
 	if err := cfig.DB.First(&d, "id = ?", vars["id"]).Error; err != nil {
@@ -56,4 +56,25 @@ func EmployeeGet(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func EmployeeUpdate(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	log.Printf("post id=: %v", id)
+	//db.First(&product, "code = ?", "D42") // find product with code D42
+	var d models.Empleado
+
+	//db.Model(&product).Updates(Product{Price: 201, Code: "F42"})
+
+	if err := cfig.DB.First(&d, "id = ?", id).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	d.Name = r.FormValue("name")
+	d.City = r.FormValue("city")
+	cfig.DB.Save(&d)
+
+	http.Redirect(w, r, "/employee", 301)
 }

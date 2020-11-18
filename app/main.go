@@ -7,6 +7,7 @@ import (
 
 	"github.com/202lp1/colms/cfig"
 	"github.com/202lp1/colms/controllers"
+	"github.com/202lp1/colms/models"
 	"github.com/gorilla/mux"
 
 	"gorm.io/driver/mysql"
@@ -24,7 +25,7 @@ func main() {
 	log.Printf("db is connected: %v", cfig.DB)
 
 	// Migrate the schema
-	//cfig.DB.AutoMigrate(&models.Empleado{})
+	cfig.DB.AutoMigrate(&models.Empleado{})
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", home).Methods("GET")
@@ -34,15 +35,16 @@ func main() {
 	r.HandleFunc("/item", controllers.Itemlist)
 	r.HandleFunc("/item/{id}", controllers.Itemget)
 
-	r.HandleFunc("/employee", controllers.EmployeeList)
-	r.HandleFunc("/employee/{id}", controllers.EmployeeGet)
+	r.HandleFunc("/employee", controllers.EmployeeList).Methods("GET")
+	r.HandleFunc("/employee/{id}", controllers.EmployeeGet).Methods("GET")
+	r.HandleFunc("/employee/{id}", controllers.EmployeeUpdate).Methods("POST")
 
 	http.ListenAndServe(":8080", r)
 }
 
 func connectDB() (c *gorm.DB, err error) {
 	dsn := "docker:docker@tcp(mysql-db:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
-	//dsn := "docker:docker@tcp(localhost:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "root:rootpass@tcp(localhost:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
 	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	return conn, err
