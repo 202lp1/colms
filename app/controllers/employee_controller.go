@@ -16,7 +16,7 @@ type ViewData struct {
 	Widgets []models.Empleado
 }
 
-var tmple = template.Must(template.ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/employee/index.html", "web/employee/form.html"))
+var tmple = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/employee/index.html", "web/employee/form.html"))
 
 func EmployeeList(w http.ResponseWriter, req *http.Request) {
 	// Create
@@ -31,6 +31,7 @@ func EmployeeList(w http.ResponseWriter, req *http.Request) {
 		Name:    "Empleado",
 		Widgets: lis,
 	}
+
 	err := tmple.ExecuteTemplate(w, "employee/indexPage", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -11,7 +11,7 @@ var tmpl = template.Must(template.ParseFiles("web/Header.tmpl", "web/Menu.tmpl",
 
 func Home(w http.ResponseWriter, req *http.Request) {
 
-	d := models.Item{Title: "Sean222", Notes: "nnn"}
+	d := models.Item{Title: "Ping", Notes: "Pong"}
 
 	err := tmpl.ExecuteTemplate(w, "home/indexPage", d)
 	if err != nil {
