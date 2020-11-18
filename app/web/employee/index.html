@@ -1,13 +1,17 @@
 {{define "employee/indexPage"}}
 {{ template "Header" }}
 {{ template "Menu"  }}
-<a href="/employee/form">NEW employee</a>
+<div class="title">
+  Registered
+</div>
 
-<h2> Registered </h2>
-<table border="1">
+<div class="table-container">
+  <a href="/employee/form">NEW employee</a>
+
+  <table class="table">
   <thead>
   <tr>
-    <td>ID</td>
+    <td>#</td>
     <td>Name</td>
     <td>City</td>
     <td>View</td>
@@ -16,20 +20,22 @@
   </tr>
    </thead>
    <tbody>
-{{ range .Widgets }}
+{{ range $i, $d := .Widgets  }}
+
   <tr>
-    <td>{{ .ID }}</td>
-    <td> {{ .Name }} </td>
-    <td>{{ .City }} </td> 
-    <td><a href="../employee/show?id={{ .ID }}">View</a></td>
-    <td><a href="../employee/form?id={{ .ID }}">Edit</a></td>
-    <td><a href="../employee/delete?id={{ .ID }}" onclick="return confirm('Are you sure?');">Delete</a></td>
+    <td>{{ $i  }}</td>
+    <td> {{ $d.Name }} </td>
+    <td>{{ $d.City }} </td> 
+    <td><a href="../employee/show?id={{ $d.ID }}">View</a></td>
+    <td><a href="../employee/form?id={{ $d.ID }}">Edit</a></td>
+    <td><a href="../employee/delete?id={{ $d.ID }}" onclick="return confirm('Are you sure?');">Delete</a></td>
   </tr>
 {{ end }}
 
 
    </tbody>
-</table>
+  </table>
+</div>
 
 <script>
   function confirmToDelete(){
