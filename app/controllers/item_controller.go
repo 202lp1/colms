@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"net/http"
 	"text/template"
+
+	"github.com/202lp1/colms/cfig"
 	"github.com/202lp1/colms/models"
 )
 
-var tmpli = template.Must(template.ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/item/index.html"))
+var tmpli = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/item/index.html"))
 
-func Itemget(w http.ResponseWriter, req *http.Request) {
+func ItemList(w http.ResponseWriter, req *http.Request) {
 
 	//t, _ := template.New("foo").Parse(`{{define "T"}}Hello, {{.}}!{{end}}`)
 	//t.ExecuteTemplate(w, "T", "<script>alert('you have been pwned')</script>")
@@ -27,6 +29,6 @@ func Itemget(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func Itemlist(w http.ResponseWriter, req *http.Request) {
+func ItemTemp(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "item list page ooooo ")
 }
