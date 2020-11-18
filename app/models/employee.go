@@ -1,14 +1,9 @@
 package models
 
 import (
-	"github.com/twinj/uuid"
+	"github.com/twinj/uuid" //jwt-best-practices
 	"gorm.io/gorm"
 )
-
-//import (
-//"github.com/twinj/uuid" //jwt-best-practices
-//"gorm.io/gorm"
-//)
 
 //https://gorm.io/docs/conventions.html
 //type Tabler interface {
@@ -23,12 +18,7 @@ func (Empleado) TableName() string {
 // BeforeCreate will set a UUID rather than numeric ID. https://gorm.io/docs/create.html
 
 func (tab *Empleado) BeforeCreate(*gorm.DB) error {
-	uuidx := uuid.NewV4()
-	tab.ID = uuidx.String()
-	// if err != nil {
-	// return err
-	//}
-	//return db.SetColumn("ID", uuid)
+	tab.ID = uuid.NewV4().String()
 	return nil
 }
 

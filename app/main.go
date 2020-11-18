@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -28,17 +27,11 @@ func main() {
 	cfig.DB.AutoMigrate(&models.Empleado{})
 
 	r := mux.NewRouter()
-	r.HandleFunc("/", home).Methods("GET")
-	r.HandleFunc("/login", login)
-	r.HandleFunc("/tabla", controllers.Tablalist)
-	r.HandleFunc("/tabla/{id}", controllers.Tablaget)
-	r.HandleFunc("/item", controllers.Itemlist)
-	r.HandleFunc("/item/{id}", controllers.Itemget)
+	r.HandleFunc("/", controllers.Home).Methods("GET")
 
 	r.HandleFunc("/employee/index", controllers.EmployeeList).Methods("GET")
-	r.HandleFunc("/employee", controllers.EmployeeGet).Methods("GET", "POST")
-	r.HandleFunc("/employee/{id}", controllers.EmployeeGet).Methods("GET", "POST")
-	//r.HandleFunc("/employee/{id}", controllers.EmployeeUpdate).Methods("POST")
+	r.HandleFunc("/employee/form", controllers.EmployeeGet).Methods("GET", "POST")
+	r.HandleFunc("/employee/delete", controllers.EmployeeDel).Methods("GET")
 
 	http.ListenAndServe(":8080", r)
 }
@@ -49,12 +42,4 @@ func connectDB() (c *gorm.DB, err error) {
 	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	return conn, err
-}
-
-func home(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Home page x2222")
-}
-
-func login(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Login page ")
 }

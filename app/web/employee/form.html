@@ -4,10 +4,11 @@
 {{ template "Menu" }} 
 {{ . }}
 <h2>Edit Name and City</h2>  
-<form method="POST" action="{{ .ID }}">
-  <input type="hidden" name="idxxxx" value="{{ .ID }}" />
-  <label> Name </label><input type="text" name="name" value="{{ .Name }}"  /><br />
-  <label> City </label><input type="text" name="city" value="{{ .City }}"  /><br />
+
+<form method="POST">
+  <input type="hidden" name="id" value="{{ .Data.ID }}" />
+  <label> Name </label><input type="text" name="name" value="{{ .Data.Name }}"  /><br />
+  <label> City </label><input type="text" name="city" value="{{ .Data.City }}"  /><br />
   <input type="submit" value="Save user" />
 </form><br />    
 {{ template "Footer" }}

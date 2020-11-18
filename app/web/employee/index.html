@@ -1,8 +1,7 @@
 {{define "employee/indexPage"}}
 {{ template "Header" }}
 {{ template "Menu"  }}
-<a href="/employee">NEW employee</a>
-{{ . }}
+<a href="/employee/form">NEW employee</a>
 
 <h2> Registered </h2>
 <table border="1">
@@ -22,12 +21,21 @@
     <td>{{ .ID }}</td>
     <td> {{ .Name }} </td>
     <td>{{ .City }} </td> 
-    <td><a href="/show?id={{ .ID }}">View</a></td>
-    <td><a href="../employee/{{ .ID }}">Edit</a></td>
-    <td><a href="/delete?id={{ .ID }}">Delete</a><td>
+    <td><a href="../employee/show?id={{ .ID }}">View</a></td>
+    <td><a href="../employee/form?id={{ .ID }}">Edit</a></td>
+    <td><a href="../employee/delete?id={{ .ID }}" onclick="return confirm('Are you sure?');">Delete</a><td>
   </tr>
 {{ end }}
+
+
    </tbody>
 </table>
+
+<script>
+  function confirmToDelete(){
+    if(confirm('Are you sure?')) ;
+  }
+</script>
 {{ template "Footer" }}
 {{end}}
+

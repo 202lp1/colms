@@ -7,11 +7,12 @@ import (
 
 	"github.com/202lp1/colms/cfig"
 	"github.com/202lp1/colms/models"
-	"github.com/gorilla/mux"
 )
 
-type ViewData struct { //opcional
+type ViewData struct {
 	Name    string
+	IsEdit  bool
+	Data    models.Empleado
 	Widgets []models.Empleado
 }
 
@@ -41,12 +42,17 @@ func EmployeeList(w http.ResponseWriter, req *http.Request) {
 }
 
 func EmployeeGet(w http.ResponseWriter, r *http.Request) {
+	log.Printf("r.Method= %v", r.Method)
 
-	id := mux.Vars(r)["id"]
+	id := r.URL.Query().Get("id") //mux.Vars(r)["id"]
 	log.Printf("get id=: %v", id)
+
 	//db.First(&product, "code = ?", "D42") // find product with code D42
 	var d models.Empleado
+
+	IsEdit := false
 	if id != "" {
+		IsEdit = true
 		if err := cfig.DB.First(&d, "id = ?", id).Error; err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -54,6 +60,7 @@ func EmployeeGet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "POST" {
+		log.Printf("POST id=: %v", id)
 		d.Name = r.FormValue("name")
 		d.City = r.FormValue("city")
 		if id != "" {
@@ -64,9 +71,27 @@ func EmployeeGet(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/employee/index", 301)
 	}
 
-	err := tmple.ExecuteTemplate(w, "employee/formPage", d)
+	data := ViewData{
+		Name:   "Empleado",
+		Data:   d,
+		IsEdit: IsEdit,
+	}
+
+	err := tmple.ExecuteTemplate(w, "employee/formPage", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func EmployeeDel(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id") //mux.Vars(r)["id"]
+	//log.Printf("del id=: %v", id)
+	var d models.Empleado
+	if err := cfig.DB.First(&d, "id = ?", id).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	cfig.DB.Unscoped().Delete(&d)
+	http.Redirect(w, r, "/employee/index", 301)
 }
