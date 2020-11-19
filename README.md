@@ -2,6 +2,10 @@
 
 Realiza el crud de una tabla de base de datos con gorm
 
+* [A. Runing local](#a)
+* [B. Runing form Docker](#b)
+* [Deploy en heroku](#c)
+* [License](#license)
 
 ### A. Runing local  
 
@@ -122,3 +126,8 @@ func connectDB() (c *gorm.DB, err error) {
 
 Please go to [goheroku-app](https://github.com/202lp1/goheroku-app) es el proyecto para subir a heroku.
 Copy the `app` folder and paste into `goheroku-app` root.
+
+
+## License
+
+Apache 2.0, see [LICENSE](LICENSE).
