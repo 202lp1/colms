@@ -5,7 +5,7 @@ Realiza el crud de una tabla de base de datos con gorm
 
 ### A. Runing local  
 
-```
+```bash
 PS D:\dockr\lp1\colms\app> nodemon --exec go run main.go --signal SIGTERM
 
 ```
@@ -15,7 +15,7 @@ PS D:\dockr\lp1\colms\app> nodemon --exec go run main.go --signal SIGTERM
 
 Build docker project
 
-```
+```bash
 PS D:\dockr\lp1\colms> docker-compose up --build -d
 PS D:\dockr\lp1\colms> docker ps
 CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                    NAMES
@@ -31,7 +31,7 @@ PS D:\dockr\lp1\colms> docker exec -it colms-app sh
 
 Running
 
-```
+```bash
 PS D:\dockr\lp1\colms> docker exec -it colms-app bash
 
 root@22be69ba019e:/app/server# make watch
@@ -41,7 +41,7 @@ root@22be69ba019e:/app/server# make watch
 ### NOTA: La base de datos esta en heroku aws
 go.mod dependencias del proyecto
 
-```
+```bash
 module github.com/202lp1/goheroku-app
 
 // +heroku goVersion go1.14
@@ -57,7 +57,7 @@ require (
 
 main.go code
 
-```
+```bash
 package main
 
 import (
@@ -117,3 +117,8 @@ func connectDB() (c *gorm.DB, err error) {
 	return conn, err
 }
 ```
+
+### Deploy en heroku
+
+Please go to [goheroku-app](https://github.com/202lp1/goheroku-app) es el proyecto para subir a heroku.
+Copy the `app` folder into `[goheroku-app]` root.
