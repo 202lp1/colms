@@ -124,10 +124,17 @@ func connectDB() (c *gorm.DB, err error) {
 
 ### Deploy en heroku
 
-Please go to [goheroku-app](https://github.com/202lp1/goheroku-app) es el proyecto para subir a heroku.
-Copy the `app` folder and paste into `goheroku-app` root.
+[goheroku-app]:      https://github.com/202lp1/goheroku-app
+
+Please go to [goheroku-app] es el proyecto para subir a heroku.
+Copy the `app` folder and paste into [goheroku-app] root.
 
 
 ### License
 
-Apache 2.0, see [LICENSE](LICENSE).
+
+
+GNU, see [LICENSE](LICENSE).
+
+Equipo de investigación y desarrollo: 
+- angeli@upeu.edu.pe, 
