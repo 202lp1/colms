@@ -17,7 +17,8 @@ Build docker project
 
 ```
 PS D:\dockr\lp1\colms> docker-compose up --build -d
-PS D:\dockr\lp1\colms> docker ps                                                                                                                                           CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                    NAMES
+PS D:\dockr\lp1\colms> docker ps
+CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                    NAMES
 36b836b4c783        colms_colms                   "bash"                   8 minutes ago       Up 7 minutes        0.0.0.0:8090->8080/tcp   colms-app
 
 
