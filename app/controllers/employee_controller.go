@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"text/template"
 
-	"github.com/202lp1/colms/cfig"
-	"github.com/202lp1/colms/models"
+	"github.com/202lp1/goheroku-app/cfig"
+	"github.com/202lp1/goheroku-app/models"
 )
 
 type ViewData struct {

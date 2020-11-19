@@ -6,7 +6,7 @@ services:
       context: "./app"
     volumes:
       - "./app:/app/server"
-    container_name: gcolms_app
+    container_name: colms-app
     restart: always
     ports:
       - "8090:8080"

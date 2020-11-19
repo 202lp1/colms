@@ -1,6 +1,16 @@
+A. Runing local 
 
 PS D:\dockr\lp1\colms\app> nodemon --exec go run main.go --signal SIGTERM
 
 
-docker exec -it gcolms_app bash
-docker exec -it gcolms_app sh
+B. Runing form Docker
+
+PS D:\dockr\lp1\colms> docker-compose up --build -d
+
+PS D:\dockr\lp1\colms> docker exec -it colms-app bash
+
+or
+PS D:\dockr\lp1\colms> docker exec -it colms-app sh
+
+
+root@22be69ba019e:/app/server# make watch
