@@ -2,9 +2,9 @@
 
 Realiza el crud de una tabla de base de datos con gorm
 
-* [A. Runing local](#a)
-* [B. Runing form Docker](#b)
-* [Deploy en heroku](#c)
+* [A. Runing local](#a.-runing-local)
+* [B. Runing form Docker](#b.-runing-form-Docker)
+* [Deploy en heroku](#deploy-en-heroku)
 * [License](#license)
 
 ### A. Runing local  
@@ -42,7 +42,7 @@ root@22be69ba019e:/app/server# make watch
 ```
 
 
-### NOTA: La base de datos esta en heroku aws
+#### NOTA: La base de datos esta en heroku aws
 go.mod dependencias del proyecto
 
 ```bash
@@ -128,6 +128,6 @@ Please go to [goheroku-app](https://github.com/202lp1/goheroku-app) es el proyec
 Copy the `app` folder and paste into `goheroku-app` root.
 
 
-## License
+### License
 
 Apache 2.0, see [LICENSE](LICENSE).
