@@ -177,7 +177,7 @@ func connectDB() (c *gorm.DB, err error) {
 
 [colms-toheroku]:      https://github.com/202lp1/colms-toheroku
 
-Please go to [goheroku-app] es el proyecto para subir a heroku.
+Please go to [colms-toheroku] es el proyecto para subir a heroku.
 Copy the `app` files and paste into [colms-toheroku] root.
 
 
