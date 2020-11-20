@@ -2,10 +2,61 @@
 
 Realiza el crud de una tabla de base de datos con gorm
 
+* [Resources sharing to docker](#resources-sharing-to-docker)
 * [A. Runing local](#a.-runing-local)
 * [B. Runing form Docker](#b.-runing-form-Docker)
 * [Deploy en heroku](#deploy-en-heroku)
 * [License](#license)
+
+
+## Resources sharing to docker
+
+	Add D:\dockr
+
+Dockerfile
+```bash
+FROM golang:1.15
+
+ENV GO111MODULE=on
+
+WORKDIR /app/server
+COPY go.mod .
+COPY go.sum .
+
+RUN go get github.com/cespare/reflex
+
+RUN go mod download
+COPY . .
+
+RUN go build 
+# CMD ["./server"]
+
+#CMD make watch
+```
+
+docker-compose.yml
+```bash
+version: '3'
+
+services:
+  colms:
+    build:
+      context: "./app"
+    volumes:
+      - "./app:/app/server"
+    container_name: colms-app
+    restart: always
+    ports:
+      - "8090:8080"
+    tty: true
+
+#para la db unirse a una red de docker
+networks:
+  default:
+    external:
+      name: mysql_default # deberá estar corriendo este contenedor.  docker network ls
+
+```
 
 ### A. Runing local  
 
@@ -40,7 +91,7 @@ PS D:\dockr\lp1\colms> docker exec -it colms-app bash
 
 root@22be69ba019e:/app/server# make watch
 ```
-
+Ir a http://localhost:8090
 
 #### NOTA: La base de datos esta en heroku aws
 go.mod dependencias del proyecto
