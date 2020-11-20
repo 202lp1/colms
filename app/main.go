@@ -6,10 +6,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/202lp1/goheroku-app/cfig"
-	"github.com/202lp1/goheroku-app/controllers"
-	"github.com/202lp1/goheroku-app/models"
+	"github.com/202lp1/colms/cfig"
+	"github.com/202lp1/colms/controllers"
+	"github.com/202lp1/colms/models"
 	"github.com/gorilla/mux"
+	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -48,6 +49,14 @@ func main() {
 	log.Printf("port: %v", port)
 	http.ListenAndServe(":"+port, r)
 
+}
+
+func connectDBmysql() (c *gorm.DB, err error) {
+	dsn := "docker:docker@tcp(mysql-db:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "docker:docker@tcp(localhost:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
+	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	return conn, err
 }
 
 func connectDB() (c *gorm.DB, err error) {

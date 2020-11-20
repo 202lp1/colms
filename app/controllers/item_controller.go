@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"text/template"
 
-	"github.com/202lp1/goheroku-app/cfig"
-	"github.com/202lp1/goheroku-app/models"
+	"github.com/202lp1/colms/cfig"
+	"github.com/202lp1/colms/models"
 )
 
 var tmpli = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/item/index.html"))

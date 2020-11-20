@@ -97,7 +97,7 @@ Ir a http://localhost:8090
 go.mod dependencias del proyecto
 
 ```bash
-module github.com/202lp1/goheroku-app
+module github.com/202lp1/colms
 
 // +heroku goVersion go1.14
 go 1.14
@@ -120,9 +120,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/202lp1/goheroku-app/cfig"
-	"github.com/202lp1/goheroku-app/controllers"
-	"github.com/202lp1/goheroku-app/models"
+	"github.com/202lp1/colms/cfig"
+	"github.com/202lp1/colms/controllers"
+	"github.com/202lp1/colms/models"
 	"github.com/gorilla/mux"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -175,10 +175,10 @@ func connectDB() (c *gorm.DB, err error) {
 
 ### Deploy en heroku
 
-[goheroku-app]:      https://github.com/202lp1/goheroku-app
+[colms-toheroku]:      https://github.com/202lp1/colms-toheroku
 
 Please go to [goheroku-app] es el proyecto para subir a heroku.
-Copy the `app` folder and paste into [goheroku-app] root.
+Copy the `app` files and paste into [colms-toheroku] root.
 
 
 ### License
