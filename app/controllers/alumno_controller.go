@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"text/template"
@@ -19,6 +20,23 @@ type ViewAlumno struct {
 var tmpla = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/alumno/index.html", "web/alumno/form.html"))
 
 func AlumnoList(w http.ResponseWriter, req *http.Request) {
+
+	alumno := models.Alumno{}
+
+	alumnos, _ := alumno.FindAll()
+
+	for _, lis := range alumnos {
+		fmt.Println(lis.ToString())
+		fmt.Println("Matriculas: ", len(lis.Matriculas))
+		if len(lis.Matriculas) > 0 {
+			for _, d := range lis.Matriculas {
+				fmt.Println(d.ToString())
+				fmt.Println("=============================")
+			}
+		}
+		fmt.Println("--------------------")
+	}
+
 	// Create
 	//cfig.DB.Create(&models.Alumno{Name: "Juan", City: "Juliaca"})
 	lis := []models.Alumno{}

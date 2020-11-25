@@ -46,6 +46,10 @@ func main() {
 	r.HandleFunc("/alumno/form", controllers.AlumnoForm).Methods("GET", "POST")
 	r.HandleFunc("/alumno/delete", controllers.AlumnoDel).Methods("GET")
 
+	r.HandleFunc("/matricula/index", controllers.MatriculaList).Methods("GET")
+	r.HandleFunc("/matricula/form", controllers.MatriculaForm).Methods("GET", "POST")
+	r.HandleFunc("/matricula/delete", controllers.MatriculaDel).Methods("GET")
+
 	//http.ListenAndServe(":80", r)
 	port := os.Getenv("PORT")
 	if port == "" {
