@@ -2,7 +2,7 @@
 
 {{ template "Header" }}
 {{ template "Menu" }} 
-{{ . }}
+{{ .Data.Id  }}
 
 <div class="title">
   {{if .IsEdit }}Update{{else}}Create{{end}} 
@@ -19,14 +19,21 @@
   </div>
 
   <div class="field">
-    <label class="label">alumno_id</label>
+    <label class="label">Alumno  </label>
     <div class="control">
-      <input class="input" type="text" placeholder="alumno_id" name="alumno_id" value="{{ .Data.AlumnoId }}">
+      <div class="select">
+        <select name="alumno_id"> // for loop in html template example
+          {{range $key, $value := .Alumnos}}
+            <option value="{{ $value.Id }}" {{if eq $value.Id $.Data.AlumnoId }}selected="selected"{{end}}>{{ $value.Nombres }}</option>
+          {{end}}
+        </select>
+      </div>
     </div>
   </div>
+
   <div class="field is-grouped">
     <div class="control">
-      <input type="submit" value="Save user" class="button is-primary"/>
+      <input type="submit" value="Save " class="button is-primary"/>
     </div>
     
   </div>

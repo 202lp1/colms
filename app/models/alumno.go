@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/twinj/uuid"
 	"gorm.io/gorm"
 )
@@ -15,7 +13,12 @@ type Alumno struct {
 }
 
 func (tab Alumno) ToString() string {
-	return fmt.Sprintf("id: %d\nname: %s", tab.Id, tab.Nombres)
+	return tab.Nombres
+}
+
+func (tab *Alumno) BeforeCreate(*gorm.DB) error {
+	tab.Id = uuid.NewV4().String()
+	return nil
 }
 
 func (alumno Alumno) FindAll(conn *gorm.DB) ([]Alumno, error) {
@@ -24,7 +27,8 @@ func (alumno Alumno) FindAll(conn *gorm.DB) ([]Alumno, error) {
 	return alumnos, nil
 }
 
-func (tab *Alumno) BeforeCreate(*gorm.DB) error {
-	tab.Id = uuid.NewV4().String()
-	return nil
+func (alumno Alumno) GetAll(conn *gorm.DB) ([]Alumno, error) {
+	var alumnos []Alumno
+	conn.Find(&alumnos)
+	return alumnos, nil
 }

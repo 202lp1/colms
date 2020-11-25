@@ -14,6 +14,7 @@ type ViewMatricula struct {
 	IsEdit  bool
 	Data    models.Matricula
 	Widgets []models.Matricula
+	Alumnos []models.Alumno
 }
 
 var tmplm = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/matricula/index.html", "web/matricula/form.html"))
@@ -53,6 +54,11 @@ func MatriculaForm(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	alumno := models.Alumno{}
+	alumnos, _ := alumno.GetAll(cfig.DB) // para mostrar los alumnos en un combobox
+
+	//alumno["curr_id"] = d.AlumnoId
+
 	if r.Method == "POST" {
 		log.Printf("POST id=: %v", id)
 		d.Semestre = r.FormValue("semestre")
@@ -80,9 +86,10 @@ func MatriculaForm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := ViewMatricula{
-		Name:   "Matricula",
-		Data:   d,
-		IsEdit: IsEdit,
+		Name:    "Matricula",
+		Data:    d,
+		IsEdit:  IsEdit,
+		Alumnos: alumnos,
 	}
 
 	err := tmplm.ExecuteTemplate(w, "matricula/formPage", data)

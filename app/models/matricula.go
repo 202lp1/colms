@@ -12,7 +12,7 @@ type Matricula struct {
 	//Fecha  string
 	Semestre string
 	AlumnoId string `gorm:"size:191"`
-	Alumno   Alumno // `gorm:"embedded"`
+	Alumno   Alumno //`gorm:"embedded"` crea el compo nombres y codigo de alumnos
 }
 
 func (tab Matricula) ToString() string {
