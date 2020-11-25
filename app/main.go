@@ -30,6 +30,7 @@ func main() {
 	// Migrate the schema
 	cfig.DB.AutoMigrate(&models.Empleado{})
 	cfig.DB.AutoMigrate(&models.Alumno{})
+	cfig.DB.AutoMigrate(&models.Matricula{})
 	//cfig.DB.Create(&models.Empleado{Name: "Juan", City: "Juliaca"})
 
 	r := mux.NewRouter()
