@@ -71,16 +71,12 @@ func MatriculaForm(w http.ResponseWriter, r *http.Request) {
 		d.AlumnoId = n
 		if id != "" {
 			if err := cfig.DB.Save(&d).Error; err != nil {
-				// return any error will rollback
-				log.Printf("No save  %v\n", err)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return //err
 			}
 
-		} else {
+		} else { //https://gorm.io/fr_FR/docs/transactions.html
 			if err := cfig.DB.Create(&d).Error; err != nil {
-				// return any error will rollback
-				log.Printf("No save  %v\n", err)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return //err
 			}
@@ -108,6 +104,12 @@ func MatriculaDel(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	cfig.DB.Unscoped().Delete(&d)
+
+	if err := cfig.DB.Unscoped().Delete(&d).Error; err != nil {
+		//log.Printf("No save  %v\n", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return //err
+	}
+
 	http.Redirect(w, r, "/matricula/index", 301)
 }

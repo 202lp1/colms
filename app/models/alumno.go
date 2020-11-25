@@ -3,7 +3,7 @@ package models
 import (
 	"fmt"
 
-	"github.com/202lp1/colms/cfig"
+	"gorm.io/gorm"
 )
 
 type Alumno struct {
@@ -17,9 +17,9 @@ func (tab Alumno) ToString() string {
 	return fmt.Sprintf("id: %d\nname: %s", tab.Id, tab.Nombres)
 }
 
-func (alumno Alumno) FindAll() ([]Alumno, error) {
+func (alumno Alumno) FindAll(conn *gorm.DB) ([]Alumno, error) {
 	var alumnos []Alumno
-	cfig.DB.Preload("Matriculas").Find(&alumnos)
+	conn.Preload("Matriculas").Find(&alumnos)
 	return alumnos, nil
 }
 

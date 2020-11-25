@@ -23,7 +23,7 @@ func AlumnoList(w http.ResponseWriter, req *http.Request) {
 
 	alumno := models.Alumno{}
 
-	alumnos, _ := alumno.FindAll()
+	alumnos, _ := alumno.FindAll(cfig.DB)
 
 	for _, lis := range alumnos {
 		fmt.Println(lis.ToString())
@@ -76,9 +76,16 @@ func AlumnoForm(w http.ResponseWriter, r *http.Request) {
 		d.Nombres = r.FormValue("nombres")
 		d.Codigo = r.FormValue("codigo")
 		if id != "" {
-			cfig.DB.Save(&d)
+			if err := cfig.DB.Save(&d).Error; err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return //err
+			}
+
 		} else {
-			cfig.DB.Create(&d)
+			if err := cfig.DB.Create(&d).Error; err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return //err
+			}
 		}
 		http.Redirect(w, r, "/alumno/index", 301)
 	}
@@ -103,6 +110,9 @@ func AlumnoDel(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	cfig.DB.Unscoped().Delete(&d)
+	if err := cfig.DB.Unscoped().Delete(&d).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return //err
+	}
 	http.Redirect(w, r, "/alumno/index", 301)
 }

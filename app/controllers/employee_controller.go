@@ -58,9 +58,16 @@ func EmployeeForm(w http.ResponseWriter, r *http.Request) {
 		d.Name = r.FormValue("name")
 		d.City = r.FormValue("city")
 		if id != "" {
-			cfig.DB.Save(&d)
+			if err := cfig.DB.Save(&d).Error; err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return //err
+			}
+
 		} else {
-			cfig.DB.Create(&d)
+			if err := cfig.DB.Create(&d).Error; err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return //err
+			}
 		}
 		http.Redirect(w, r, "/employee/index", 301)
 	}
@@ -85,6 +92,10 @@ func EmployeeDel(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	cfig.DB.Unscoped().Delete(&d)
+
+	if err := cfig.DB.Unscoped().Delete(&d).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return //err
+	}
 	http.Redirect(w, r, "/employee/index", 301)
 }
