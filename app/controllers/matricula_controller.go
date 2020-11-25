@@ -70,9 +70,20 @@ func MatriculaForm(w http.ResponseWriter, r *http.Request) {
 
 		d.AlumnoId = n
 		if id != "" {
-			cfig.DB.Save(&d)
+			if err := cfig.DB.Save(&d).Error; err != nil {
+				// return any error will rollback
+				log.Printf("No save  %v\n", err)
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return //err
+			}
+
 		} else {
-			cfig.DB.Create(&d)
+			if err := cfig.DB.Create(&d).Error; err != nil {
+				// return any error will rollback
+				log.Printf("No save  %v\n", err)
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return //err
+			}
 		}
 		http.Redirect(w, r, "/matricula/index", 301)
 	}
