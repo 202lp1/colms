@@ -56,7 +56,10 @@ func MatriculaForm(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		log.Printf("POST id=: %v", id)
 		d.Semestre = r.FormValue("semestre")
-		//d.AlumnoId = r.FormValue("alumno_id")
+		ida := r.FormValue("alumno_id")
+		log.Printf("ida=: %v", ida)
+
+		d.AlumnoId = 3
 		if id != "" {
 			cfig.DB.Save(&d)
 		} else {
