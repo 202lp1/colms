@@ -9,7 +9,7 @@ import (
 	"github.com/202lp1/colms/models"
 )
 
-type ViewData struct {
+type ViewEmployee struct {
 	Name    string
 	IsEdit  bool
 	Data    models.Empleado
@@ -27,7 +27,7 @@ func EmployeeList(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	//log.Printf("lis: %v", lis)
-	data := ViewData{
+	data := ViewEmployee{
 		Name:    "Empleado",
 		Widgets: lis,
 	}
@@ -65,7 +65,7 @@ func EmployeeForm(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/employee/index", 301)
 	}
 
-	data := ViewData{
+	data := ViewEmployee{
 		Name:   "Empleado",
 		Data:   d,
 		IsEdit: IsEdit,

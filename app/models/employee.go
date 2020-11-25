@@ -18,7 +18,7 @@ func (Empleado) TableName() string {
 // BeforeCreate will set a UUID rather than numeric ID. https://gorm.io/docs/create.html
 
 func (tab *Empleado) BeforeCreate(*gorm.DB) error {
-	tab.ID = uuid.NewV4().String()
+	tab.Id = uuid.NewV4().String()
 	return nil
 }
 
@@ -29,7 +29,7 @@ type Empleado struct {
 	//ID uint `gorm:"primaryKey"`
 	//ID     uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
 	//ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
-	ID string `gorm:"primary_key;column:id"` //;default:UUID()
+	Id string `gorm:"primary_key;column:id"` //;default:UUID()
 	//UUID   string `gorm:"primaryKey"`
 	//CreatedAt time.Time
 	//UpdatedAt time.Time

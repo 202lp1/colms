@@ -9,7 +9,7 @@ import (
 	"github.com/202lp1/colms/cfig"
 	"github.com/202lp1/colms/controllers"
 	"github.com/202lp1/colms/models"
-	"github.com/gorilla/mux"
+	"github.com/gorilla/mux" //gin
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -21,14 +21,15 @@ func main() {
 	//http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	//	fmt.Fprint(w, "Hello World!")
 	//})
-	cfig.DB, err = connectDB()
+	cfig.DB, err = connectDBmysql()
 	if err != nil {
 		panic("failed to connect database: " + err.Error())
 	}
 	log.Printf("db is connected: %v", cfig.DB)
-	
+
 	// Migrate the schema
 	cfig.DB.AutoMigrate(&models.Empleado{})
+	cfig.DB.AutoMigrate(&models.Alumno{})
 	//cfig.DB.Create(&models.Empleado{Name: "Juan", City: "Juliaca"})
 
 	r := mux.NewRouter()
@@ -40,11 +41,14 @@ func main() {
 	r.HandleFunc("/employee/form", controllers.EmployeeForm).Methods("GET", "POST")
 	r.HandleFunc("/employee/delete", controllers.EmployeeDel).Methods("GET")
 
+	r.HandleFunc("/alumno/index", controllers.AlumnoList).Methods("GET")
+	r.HandleFunc("/alumno/form", controllers.AlumnoForm).Methods("GET", "POST")
+	r.HandleFunc("/alumno/delete", controllers.AlumnoDel).Methods("GET")
 
 	//http.ListenAndServe(":80", r)
 	port := os.Getenv("PORT")
 	if port == "" {
-	  port = "8080"
+		port = "8080"
 	}
 	log.Printf("port: %v", port)
 	http.ListenAndServe(":"+port, r)
