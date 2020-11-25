@@ -20,19 +20,16 @@ type ViewMatricula struct {
 var tmplm = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/matricula/index.html", "web/matricula/form.html"))
 
 func MatriculaList(w http.ResponseWriter, req *http.Request) {
-	// Create
-	//cfig.DB.Create(&models.Matricula{Name: "Juan", City: "Juliaca"})
+
 	lis := []models.Matricula{}
-	if err := cfig.DB.Find(&lis).Error; err != nil {
+	if err := cfig.DB.Preload("Alumno").Find(&lis).Error; err != nil { // Preload("Alumno") carga los objetos Alumno relacionado
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	//log.Printf("lis: %v", lis)
 	data := ViewMatricula{
 		Name:    "Matricula",
 		Widgets: lis,
 	}
-
 	err := tmplm.ExecuteTemplate(w, "matricula/indexPage", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -57,8 +54,6 @@ func MatriculaForm(w http.ResponseWriter, r *http.Request) {
 	alumno := models.Alumno{}
 	alumnos, _ := alumno.GetAll(cfig.DB) // para mostrar los alumnos en un combobox
 
-	//alumno["curr_id"] = d.AlumnoId
-
 	if r.Method == "POST" {
 		log.Printf("POST id=: %v", id)
 		d.Semestre = r.FormValue("semestre")
@@ -76,7 +71,7 @@ func MatriculaForm(w http.ResponseWriter, r *http.Request) {
 				return //err
 			}
 
-		} else { //https://gorm.io/fr_FR/docs/transactions.html
+		} else {
 			if err := cfig.DB.Create(&d).Error; err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return //err
@@ -100,7 +95,7 @@ func MatriculaForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func MatriculaDel(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("id") //mux.Vars(r)["id"]//log.Printf("del id=: %v", id)
+	id := r.URL.Query().Get("id")
 	var d models.Matricula
 	if err := cfig.DB.First(&d, "id = ?", id).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
