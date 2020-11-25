@@ -3,14 +3,15 @@ package models
 import (
 	"fmt"
 
+	"github.com/twinj/uuid"
 	"gorm.io/gorm"
 )
 
 type Alumno struct {
-	Id         int `gorm:"primary_key;"`
+	Id         string `gorm:"primaryKey;"`
 	Nombres    string
-	Codigo     string      //`gorm:"column:my_ciudad"`
-	Matriculas []Matricula // `gorm:"foreignkey:ManagerID"`
+	Codigo     string
+	Matriculas []Matricula
 }
 
 func (tab Alumno) ToString() string {
@@ -23,9 +24,7 @@ func (alumno Alumno) FindAll(conn *gorm.DB) ([]Alumno, error) {
 	return alumnos, nil
 }
 
-//"github.com/twinj/uuid"
-
-//func (tab *Alumno) BeforeCreate(*gorm.DB) error {
-//	tab.Id = uuid.NewV4().String()
-//	return nil
-//}
+func (tab *Alumno) BeforeCreate(*gorm.DB) error {
+	tab.Id = uuid.NewV4().String()
+	return nil
+}

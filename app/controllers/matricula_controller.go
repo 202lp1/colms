@@ -3,7 +3,6 @@ package controllers
 import (
 	"log"
 	"net/http"
-	"strconv"
 	"text/template"
 
 	"github.com/202lp1/colms/cfig"
@@ -57,18 +56,14 @@ func MatriculaForm(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		log.Printf("POST id=: %v", id)
 		d.Semestre = r.FormValue("semestre")
-		n, err := strconv.Atoi(r.FormValue("alumno_id"))
-		//if err == nil {
-		//	fmt.Printf("%d of type %T", n, n)
+		//n, err := strconv.Atoi(r.FormValue("alumno_id"))
+		//if err != nil {
+		//	log.Printf("Invalid ID: %v - %v\n", n, err)
+		//	http.Error(w, err.Error(), http.StatusInternalServerError)
+		//	return
 		//}
-		if err != nil {
-			log.Printf("Invalid ID: %v - %v\n", n, err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			//n = 1
-			return
-		}
 
-		d.AlumnoId = n
+		d.AlumnoId = r.FormValue("alumno_id") //n
 		if id != "" {
 			if err := cfig.DB.Save(&d).Error; err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
