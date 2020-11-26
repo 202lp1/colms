@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/twinj/uuid"
 	"gorm.io/gorm"
 )
@@ -23,12 +25,20 @@ func (tab *Alumno) BeforeCreate(*gorm.DB) error {
 
 func (alumno Alumno) FindAll(conn *gorm.DB) ([]Alumno, error) {
 	var alumnos []Alumno
-	conn.Preload("Matriculas").Find(&alumnos)
+	if err := conn.Preload("Matriculas").Find(&alumnos).Error; err != nil {
+		return nil, err
+	}
 	return alumnos, nil
 }
 
 func (alumno Alumno) GetAll(conn *gorm.DB) ([]Alumno, error) {
 	var alumnos []Alumno
-	conn.Find(&alumnos)
+	if err := conn.Find(&alumnos).Error; err != nil {
+		//http.Error(w, err.Error(), http.StatusInternalServerError)
+		//fmt.Printf("Error: %v", err)
+		//return fmt.Errorf("Error: %v", err)
+		//continue
+		return nil, fmt.Errorf("Error: %v", err)
+	}
 	return alumnos, nil
 }
