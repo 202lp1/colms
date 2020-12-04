@@ -22,7 +22,8 @@
     <label class="label">Alumno  </label>
     <div class="control">
       <div class="select">
-        <select name="alumno_id"> // for loop in html template example
+        <select name="alumno_id" required> // for loop in html template example
+          <option  value="" >Elija un alumno</option>
           {{range $key, $value := .Alumnos}}
             <option value="{{ $value.Id }}" {{if eq $value.Id $.Data.AlumnoId }}selected="selected"{{end}}>{{ $value.Nombres }}</option>
           {{end}}

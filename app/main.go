@@ -33,7 +33,16 @@ func main() {
 	cfig.DB.AutoMigrate(&models.Matricula{})
 	//cfig.DB.Create(&models.Empleado{Name: "Juan", City: "Juliaca"})
 
-	r := mux.NewRouter()
+	r := NewRouter()
+
+	//fs := http.FileServer(http.Dir("assets/"))
+    //http.Handle("/static/", http.StripPrefix("/static/", fs))
+    //r := mux.NewRouter().StrictSlash(true)
+ 	//r.Handle("/", http.FileServer(http.Dir("assets/")))
+
+
+
+
 	r.HandleFunc("/", controllers.Home).Methods("GET")
 
 	r.HandleFunc("/item/index", controllers.ItemList).Methods("GET")
@@ -59,6 +68,21 @@ func main() {
 	http.ListenAndServe(":"+port, r)
 
 }
+
+func NewRouter() *mux.Router {
+	router := mux.NewRouter().StrictSlash(true)
+
+	// Choose the folder to serve
+	staticDir := "/assets/"
+
+	// Create the route
+	router.
+		PathPrefix(staticDir).
+		Handler(http.StripPrefix(staticDir, http.FileServer(http.Dir("."+staticDir))))
+
+	return router
+}
+
 
 func connectDBmysql() (c *gorm.DB, err error) {
 	dsn := "docker:docker@tcp(mysql-db:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"

@@ -12,7 +12,7 @@ type Matricula struct {
 	//Fecha  string
 	Semestre string
 	AlumnoId string `gorm:"size:191"`
-	Alumno   Alumno //`gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` //`gorm:"embedded"` crea el compo nombres y codigo de alumnos
+	Alumno   Alumno 
 }
 
 func (tab Matricula) ToString() string {
@@ -24,4 +24,6 @@ func (tab *Matricula) BeforeCreate(*gorm.DB) error {
 	return nil
 }
 
-// Alumno   Alumno //para crear el FK `gorm:"foreignkey:AlumnoId"`
+// Alumno Alumno //para crear el FK `gorm:"foreignkey:AlumnoId"`
+//`gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` 
+//`gorm:"embedded"` crea el compo nombres y codigo de alumnos
