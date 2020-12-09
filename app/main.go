@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"fmt"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -13,6 +13,12 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"github.com/gorilla/sessions"
+)
+var (
+    // key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+    key = []byte("super-secret-key")
+    store = sessions.NewCookieStore(key)
 )
 
 var err error
@@ -40,6 +46,10 @@ func main() {
     //r := mux.NewRouter().StrictSlash(true)
  	//r.Handle("/", http.FileServer(http.Dir("assets/")))
 
+ 	
+ 	r.HandleFunc("/login", login).Methods("GET")
+ 	r.HandleFunc("/logout", logout).Methods("GET")
+ 	r.HandleFunc("/secret", secret).Methods("GET")
 
 
 
@@ -67,6 +77,42 @@ func main() {
 	log.Printf("port: %v", port)
 	http.ListenAndServe(":"+port, r)
 
+}
+
+func secret(w http.ResponseWriter, r *http.Request) {
+    session, _ := store.Get(r, "cookie-name")
+
+    // Check if user is authenticated
+    if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+        http.Error(w, "Forbidden", http.StatusForbidden)
+        return
+    }
+
+    // Print secret message
+    fmt.Fprintln(w, "The cake is a lie!")
+}
+func login(w http.ResponseWriter, r *http.Request) {
+    session, _ := store.Get(r, "cookie-name")
+
+    // Authentication goes here
+    // ...
+
+    // Set user as authenticated
+    session.Values["user_id"] = "7859"
+    session.Values["authenticated"] = true
+    session.Save(r, w)
+
+    fmt.Fprintln(w, "authenticated is successful!")
+}
+
+func logout(w http.ResponseWriter, r *http.Request) {
+    session, _ := store.Get(r, "cookie-name")
+
+    // Revoke users authentication
+    session.Values["authenticated"] = false
+    session.Values["user_id"] = ""
+    session.Save(r, w)
+    fmt.Fprintln(w, "thank you! see you")
 }
 
 func NewRouter() *mux.Router {

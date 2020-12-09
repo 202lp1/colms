@@ -8,18 +8,33 @@ import (
 
 	"github.com/202lp1/colms/cfig"
 	"github.com/202lp1/colms/models"
+	"github.com/gorilla/sessions"
 )
-
+var (
+    // key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+    key = []byte("super-secret-key")
+    store = sessions.NewCookieStore(key)
+)
 type ViewAlumno struct {
 	Name    string
 	IsEdit  bool
 	Data    models.Alumno
 	Widgets []models.Alumno
+	UserId string
 }
 
 var tmpla = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/alumno/index.html", "web/alumno/form.html"))
 
 func AlumnoList(w http.ResponseWriter, req *http.Request) {
+
+	session, _ := store.Get(req, "cookie-name")
+
+    // Check if user is authenticated
+    if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+        http.Error(w, "Forbidden", http.StatusForbidden)
+        return
+    }
+
 
 	alumno := models.Alumno{}
 
@@ -48,6 +63,7 @@ func AlumnoList(w http.ResponseWriter, req *http.Request) {
 	data := ViewAlumno{
 		Name:    "Alumno",
 		Widgets: lis,
+		UserId:	session.Values["user_id"].(string),
 	}
 
 	err := tmpla.ExecuteTemplate(w, "alumno/indexPage", data)
