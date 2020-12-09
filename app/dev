@@ -1,5 +1,0 @@
-#!/bin/bash
-export TOKEN_SECRET="secretfortoken"
-export PORT="80"
-
-go run main.go

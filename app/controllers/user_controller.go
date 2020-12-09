@@ -166,3 +166,13 @@ func UserLoginForm(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func UserLogout(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "cookie-name")
+
+	// Revoke users authentication
+	session.Values["authenticated"] = false
+	session.Values["user_id"] = ""
+	session.Save(r, w)
+	fmt.Fprintln(w, "thank you! see you")
+}

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"text/template"
@@ -25,14 +24,14 @@ var tmpla = template.Must(template.New("foo").Funcs(cfig.FuncMap).
 func AlumnoList(w http.ResponseWriter, req *http.Request) {
 
 	session, _ := store.Get(req, "cookie-name")
+	/*
+		// Check if user is authenticated
+		if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+			http.Error(w, "Forbidden", http.StatusForbidden)
+			return
+		}*/
 
-	// Check if user is authenticated
-	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
-
-	alumno := models.Alumno{}
+	/*alumno := models.Alumno{}
 
 	alumnos, _ := alumno.FindAll(cfig.DB)
 
@@ -46,7 +45,7 @@ func AlumnoList(w http.ResponseWriter, req *http.Request) {
 			}
 		}
 		fmt.Println("--------------------")
-	}
+	}*/
 
 	// Create
 	//cfig.DB.Create(&models.Alumno{Name: "Juan", City: "Juliaca"})
