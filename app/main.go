@@ -10,15 +10,16 @@ import (
 	"github.com/202lp1/colms/controllers"
 	"github.com/202lp1/colms/models"
 	"github.com/gorilla/mux" //gin
+	"github.com/gorilla/sessions"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"github.com/gorilla/sessions"
 )
+
 var (
-    // key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-    key = []byte("super-secret-key")
-    store = sessions.NewCookieStore(key)
+	// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+	key   = []byte("super-secret-key")
+	store = sessions.NewCookieStore(key)
 )
 
 var err error
@@ -37,21 +38,20 @@ func main() {
 	cfig.DB.AutoMigrate(&models.Empleado{})
 	cfig.DB.AutoMigrate(&models.Alumno{})
 	cfig.DB.AutoMigrate(&models.Matricula{})
+	cfig.DB.AutoMigrate(&models.User{})
 	//cfig.DB.Create(&models.Empleado{Name: "Juan", City: "Juliaca"})
 
 	r := NewRouter()
 
 	//fs := http.FileServer(http.Dir("assets/"))
-    //http.Handle("/static/", http.StripPrefix("/static/", fs))
-    //r := mux.NewRouter().StrictSlash(true)
- 	//r.Handle("/", http.FileServer(http.Dir("assets/")))
+	//http.Handle("/static/", http.StripPrefix("/static/", fs))
+	//r := mux.NewRouter().StrictSlash(true)
+	//r.Handle("/", http.FileServer(http.Dir("assets/")))
 
- 	
- 	r.HandleFunc("/login", login).Methods("GET")
- 	r.HandleFunc("/logout", logout).Methods("GET")
- 	r.HandleFunc("/secret", secret).Methods("GET")
-
-
+	//r.HandleFunc("/login", login).Methods("GET")
+	r.HandleFunc("/login", controllers.UserLoginForm).Methods("GET", "POST")
+	r.HandleFunc("/logout", logout).Methods("GET")
+	r.HandleFunc("/secret", secret).Methods("GET")
 
 	r.HandleFunc("/", controllers.Home).Methods("GET")
 
@@ -69,6 +69,10 @@ func main() {
 	r.HandleFunc("/matricula/form", controllers.MatriculaForm).Methods("GET", "POST")
 	r.HandleFunc("/matricula/delete", controllers.MatriculaDel).Methods("GET")
 
+	r.HandleFunc("/user/index", controllers.UserList).Methods("GET")
+	r.HandleFunc("/user/form", controllers.UserForm).Methods("GET", "POST")
+	r.HandleFunc("/user/delete", controllers.UserDel).Methods("GET")
+
 	//http.ListenAndServe(":80", r)
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -80,39 +84,39 @@ func main() {
 }
 
 func secret(w http.ResponseWriter, r *http.Request) {
-    session, _ := store.Get(r, "cookie-name")
+	session, _ := store.Get(r, "cookie-name")
 
-    // Check if user is authenticated
-    if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-        http.Error(w, "Forbidden", http.StatusForbidden)
-        return
-    }
+	// Check if user is authenticated
+	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
+	}
 
-    // Print secret message
-    fmt.Fprintln(w, "The cake is a lie!")
+	// Print secret message
+	fmt.Fprintln(w, "The cake is a lie!")
 }
 func login(w http.ResponseWriter, r *http.Request) {
-    session, _ := store.Get(r, "cookie-name")
+	session, _ := store.Get(r, "cookie-name")
 
-    // Authentication goes here
-    // ...
+	// Authentication goes here
+	// ...
 
-    // Set user as authenticated
-    session.Values["user_id"] = "7859"
-    session.Values["authenticated"] = true
-    session.Save(r, w)
+	// Set user as authenticated
+	session.Values["user_id"] = "7859"
+	session.Values["authenticated"] = true
+	session.Save(r, w)
 
-    fmt.Fprintln(w, "authenticated is successful!")
+	fmt.Fprintln(w, "authenticated is successful!")
 }
 
 func logout(w http.ResponseWriter, r *http.Request) {
-    session, _ := store.Get(r, "cookie-name")
+	session, _ := store.Get(r, "cookie-name")
 
-    // Revoke users authentication
-    session.Values["authenticated"] = false
-    session.Values["user_id"] = ""
-    session.Save(r, w)
-    fmt.Fprintln(w, "thank you! see you")
+	// Revoke users authentication
+	session.Values["authenticated"] = false
+	session.Values["user_id"] = ""
+	session.Save(r, w)
+	fmt.Fprintln(w, "thank you! see you")
 }
 
 func NewRouter() *mux.Router {
@@ -128,7 +132,6 @@ func NewRouter() *mux.Router {
 
 	return router
 }
-
 
 func connectDBmysql() (c *gorm.DB, err error) {
 	dsn := "docker:docker@tcp(mysql-db:3306)/test_db?charset=utf8mb4&parseTime=True&loc=Local"
