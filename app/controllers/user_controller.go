@@ -43,7 +43,7 @@ func UserList(w http.ResponseWriter, req *http.Request) {
 	data := ViewUser{
 		Name:    "User",
 		Widgets: lis,
-		UserId:  session.Values["user_id"].(string),
+		UserId:  "", // session.Values["user_id"].(string),
 	}
 
 	err := tmplu.ExecuteTemplate(w, "user/indexPage", data)
