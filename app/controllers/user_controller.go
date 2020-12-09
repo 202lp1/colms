@@ -10,12 +10,6 @@ import (
 	"github.com/202lp1/colms/models"
 )
 
-var (
-// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-//key   = []byte("super-secret-key")
-//store = sessions.NewCookieStore(key)
-)
-
 type ViewUser struct {
 	Name    string
 	IsEdit  bool
@@ -24,7 +18,9 @@ type ViewUser struct {
 	UserId  string
 }
 
-var tmplu = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/user/index.html", "web/user/form.html", "web/user/login.html"))
+var tmplu = template.Must(template.New("foo").Funcs(cfig.FuncMap).
+	ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl",
+		"web/user/index.html", "web/user/form.html", "web/user/login.html"))
 
 func UserList(w http.ResponseWriter, req *http.Request) {
 
@@ -78,11 +74,17 @@ func UserForm(w http.ResponseWriter, r *http.Request) {
 		user.Password = r.FormValue("password")
 		user.PasswordConfirm = r.FormValue("password_confirm")
 		if id != "" {
-			if err := cfig.DB.Save(&user).Error; err != nil {
+			/*if err := cfig.DB.Save(&user).Error; err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return //err
-			}
+			}*/
 
+			err := user.UpdatePassword(cfig.DB)
+			if err != nil {
+				fmt.Println("Error in user.UpdatePassword()")
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 		} else {
 			/*if err := cfig.DB.Create(&user).Error; err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)

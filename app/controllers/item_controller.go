@@ -9,7 +9,9 @@ import (
 	"github.com/202lp1/colms/models"
 )
 
-var tmpli = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/item/index.html"))
+var tmpli = template.Must(template.New("foo").Funcs(cfig.FuncMap).
+	ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl",
+		"web/item/index.html"))
 
 func ItemList(w http.ResponseWriter, req *http.Request) {
 

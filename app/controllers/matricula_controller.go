@@ -17,7 +17,9 @@ type ViewMatricula struct {
 	Alumnos []models.Alumno
 }
 
-var tmplm = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/matricula/index.html", "web/matricula/form.html"))
+var tmplm = template.Must(template.New("foo").Funcs(cfig.FuncMap).
+	ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl",
+		"web/matricula/index.html", "web/matricula/form.html"))
 
 func MatriculaList(w http.ResponseWriter, req *http.Request) {
 

@@ -42,8 +42,8 @@ type User struct {
 	UpdatedAt       time.Time `json:"_"`
 	Email           string    `gorm:"column:email" json:"email"`
 	PasswordHash    string    `json:"-"`
-	Password        string    `json:"password"`
-	PasswordConfirm string    `json:"password_confirm"`
+	Password        string    `gorm:"-" json:"password"`
+	PasswordConfirm string    `gorm:"-" json:"password_confirm"`
 }
 
 func (u *User) Register(conn *gorm.DB) error {
@@ -93,8 +93,8 @@ func (u *User) Register(conn *gorm.DB) error {
 	//	return fmt.Errorf(err.Error())
 	//}
 
-	u.Password = ""
-	u.PasswordConfirm = ""
+	//u.Password = ""
+	//u.PasswordConfirm = ""
 	conn.Create(&u)
 	return err // ya te asigna el ID del user
 }
@@ -136,4 +136,57 @@ func (u *User) IsAuthenticated(conn *gorm.DB) error {
 	}
 
 	return nil
+}
+
+func (u *User) UpdatePassword(conn *gorm.DB) error {
+
+	if len(u.Password) < 4 || len(u.PasswordConfirm) < 4 {
+		return fmt.Errorf("Password must be at least 4 characters long.")
+	}
+
+	if u.Password != u.PasswordConfirm {
+		return fmt.Errorf("Passwords do not match.")
+	}
+
+	if len(u.Email) < 4 {
+		return fmt.Errorf("Email must be at least 4 characters long.")
+	}
+
+	u.Email = strings.ToLower(u.Email)
+	var userLookup User
+	var err error
+	if err = conn.First(&userLookup, "email = ?", u.Email).Error; err != nil {
+		//http.Error(w, err.Error(), http.StatusInternalServerError)
+		//return fmt.Errorf("Error p" + err.Error())
+	}
+
+	//row := conn.QueryRow(context.Background(), "SELECT id from user_account WHERE email = $1", u.Email)
+	//userLookup := User{}
+	//err := row.Scan(&userLookup)
+	if u.Email != strings.ToLower(userLookup.Email) {
+		fmt.Println("found user")
+		fmt.Println(userLookup.Email)
+		return fmt.Errorf("A user with that email not exists")
+	}
+
+	pwdHash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("There was an error creating your account.")
+	}
+	u.PasswordHash = string(pwdHash)
+
+	//now := time.Now()
+	//_, err = conn.Exec(context.Background(), "INSERT INTO user_account (created_at, updated_at, email, password_hash) VALUES($1, $2, $3, $4)", now, now, u.Email, u.PasswordHash)
+
+	//row2 := conn.QueryRow(context.Background(), "SELECT id, password_hash from user_account WHERE email = $1", u.Email)
+	//row2.Scan(&u.ID, &u.PasswordHash)
+	//if err := c.BindJSON(&userLookup); err != nil {
+
+	//	return fmt.Errorf(err.Error())
+	//}
+
+	//u.Password = ""
+	//u.PasswordConfirm = ""
+	conn.Save(&u)
+	return err // ya te asigna el ID del user
 }

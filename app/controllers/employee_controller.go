@@ -16,7 +16,9 @@ type ViewEmployee struct {
 	Widgets []models.Empleado
 }
 
-var tmple = template.Must(template.New("foo").Funcs(cfig.FuncMap).ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl", "web/employee/index.html", "web/employee/form.html"))
+var tmple = template.Must(template.New("foo").Funcs(cfig.FuncMap).
+	ParseFiles("web/Header.tmpl", "web/Menu.tmpl", "web/Footer.tmpl",
+		"web/employee/index.html", "web/employee/form.html"))
 
 func EmployeeList(w http.ResponseWriter, req *http.Request) {
 	// Create
