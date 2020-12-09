@@ -28,8 +28,8 @@ func UserList(w http.ResponseWriter, req *http.Request) {
 
 	// Check if user is authenticated
 	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
+		//http.Error(w, "Forbidden", http.StatusForbidden)
+		//return
 	}
 
 	// Create
